@@ -3,6 +3,9 @@ package gson;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import gson.ComplexObject.AgeRange;
+import gson.ComplexObject.Person;
+import gson.ComplexObject.Sex;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -10,7 +13,6 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import gson.ComplexObject.*;
 
 public class SerializeAndDeserialize {
     public static void main(String[] args) {

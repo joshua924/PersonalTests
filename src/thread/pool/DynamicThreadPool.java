@@ -3,27 +3,19 @@ package thread.pool;
 import lombok.extern.log4j.Log4j;
 
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
 @Log4j
 public class DynamicThreadPool extends ThreadPoolExecutor {
-    private boolean isPaused = false;
-    private ReentrantLock pauseLock = new ReentrantLock();
-    private Condition unpaused = pauseLock.newCondition();
+    private Semaphore canExecute = new Semaphore(1);
 
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
-        pauseLock.lock();
         try {
-            while (isPaused) {
-                unpaused.await();
-            }
+            canExecute.acquire();
+            canExecute.release();
         } catch (InterruptedException e) {
             t.interrupt();
-        } finally {
-            pauseLock.unlock();
         }
     }
 
@@ -33,34 +25,19 @@ public class DynamicThreadPool extends ThreadPoolExecutor {
     }
 
     public void resize(int size) {
-        if (size == 0) {
-            pause();
-            setCorePoolSize(0);
-            setMaximumPoolSize(1);
-        } else {
-            resume();
-            setCorePoolSize(size);
-            setMaximumPoolSize(size);
-            prestartAllCoreThreads();
-        }
-    }
-
-    private void pause() {
-        pauseLock.lock();
         try {
-            isPaused = true;
-        } finally {
-            pauseLock.unlock();
-        }
-    }
-
-    private void resume() {
-        pauseLock.lock();
-        try {
-            isPaused = false;
-            unpaused.signalAll();
-        } finally {
-            pauseLock.unlock();
+            if (size == 0) {
+                canExecute.acquire();
+                setCorePoolSize(0);
+                setMaximumPoolSize(1);
+            } else {
+                canExecute.release();
+                setCorePoolSize(size);
+                setMaximumPoolSize(size);
+                prestartAllCoreThreads();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Failed to resize", e);
         }
     }
 

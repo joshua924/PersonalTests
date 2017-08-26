@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,10 +37,22 @@ public class DynamicThreadPoolTest {
         for (int i = 0; i < 1000; i++) {
             dynamicThreadPool.execute(new AddToCount(count));
         }
+        // wait a while and verify that no tasks have run
+        Thread.sleep(100);
         assertEquals(0, count.get());
-        assertTrue(dynamicThreadPool.getQueue().size() > 0);
-        dynamicThreadPool.resize(5);
-        while (count.get() != 1000) ;
+    }
+
+    @Test
+    public void decreaseToZeroThenIncrease() throws Exception {
+        Semaphore semaphore = new Semaphore(100);
+        semaphore.acquire(100);
+        dynamicThreadPool.resize(0);
+        for (int i = 0; i < 100; i++) {
+            dynamicThreadPool.execute(new ReleaseLock(semaphore));
+        }
+        // increase the size and verify that all pending tasks do run
+        dynamicThreadPool.resize(10);
+        semaphore.acquire(100);
     }
 
     @Test
@@ -69,6 +82,16 @@ public class DynamicThreadPoolTest {
         @Override
         public void run() {
             count.incrementAndGet();
+        }
+    }
+
+    @AllArgsConstructor
+    private static class ReleaseLock implements Runnable {
+        private Semaphore semaphore;
+
+        @Override
+        public void run() {
+            semaphore.release();
         }
     }
 }

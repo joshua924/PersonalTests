@@ -25,19 +25,16 @@ public class DynamicThreadPool extends ThreadPoolExecutor {
     }
 
     public void resize(int size) {
-        try {
-            if (size == 0) {
-                canExecute.acquire();
-                setCorePoolSize(0);
-                setMaximumPoolSize(1);
-            } else {
-                canExecute.release();
-                setCorePoolSize(size);
-                setMaximumPoolSize(size);
-                prestartAllCoreThreads();
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Failed to resize", e);
+        if (size == 0) {
+            canExecute.drainPermits();
+            setCorePoolSize(0);
+            setMaximumPoolSize(1);
+        } else {
+            canExecute.drainPermits();
+            canExecute.release();
+            setCorePoolSize(size);
+            setMaximumPoolSize(size);
+            prestartAllCoreThreads();
         }
     }
 

@@ -65,6 +65,20 @@ public class DynamicThreadPoolTest {
         assertEquals(1, track.size());
     }
 
+    @Test
+    public void testRelease() throws Exception {
+        dynamicThreadPool.resize(3);
+        dynamicThreadPool.resize(3);
+        dynamicThreadPool.resize(3);
+    }
+
+    @Test
+    public void testAcquire() throws Exception {
+        dynamicThreadPool.resize(0);
+        dynamicThreadPool.resize(0);
+        dynamicThreadPool.resize(0);
+    }
+
     @AllArgsConstructor
     private static class AddThreadNameToSet implements Runnable {
         private Set<String> track;

@@ -18,6 +18,7 @@ public class SlidingWindowMedian {
         res[0] = getMedian(current);
         for (int i = k; i < nums.length; i++) {
             int remove = Collections.binarySearch(current, nums[i - k]);
+            current.remove(remove);
             int index = Collections.binarySearch(current, nums[i]);
             if (index < 0) {
                 index = -index - 1;

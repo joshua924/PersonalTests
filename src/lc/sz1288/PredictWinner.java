@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class PredictWinner {
     public boolean PredictTheWinner(int[] nums) {

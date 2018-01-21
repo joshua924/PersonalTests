@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class Base7 {
     public String convertToBase7(int num) {

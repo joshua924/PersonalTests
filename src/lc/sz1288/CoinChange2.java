@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class CoinChange2 {
     public int change(int amount, int[] coins) {

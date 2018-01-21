@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class MagicalString {
     public int magicalString(int n) {

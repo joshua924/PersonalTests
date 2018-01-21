@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class LicenseKeyFormatting {
     public String licenseKeyFormatting(String S, int K) {

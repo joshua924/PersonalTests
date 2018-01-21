@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 public class FindPoisonedDuration {
     public int findPoisonedDuration(int[] timeSeries, int duration) {

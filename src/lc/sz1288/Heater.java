@@ -1,4 +1,4 @@
-package leetcode;
+package lc.sz1288;
 
 import java.util.Arrays;
 

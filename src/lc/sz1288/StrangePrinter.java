@@ -1,7 +1,5 @@
 package lc.sz1288;
 
-import java.util.Arrays;
-
 /**
  * There is a strange printer with the following two special requirements:
  * <p>

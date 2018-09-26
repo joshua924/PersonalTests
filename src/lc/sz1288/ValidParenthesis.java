@@ -1,9 +1,5 @@
 package lc.sz1288;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Stack;
-
 /**
  * Given a string containing only three types of characters: '(', ')' and '*', write a function to check whether this string is valid. We define the validity of a string by these rules:
  * <p>
@@ -15,9 +11,28 @@ import java.util.Stack;
  */
 public class ValidParenthesis {
     public boolean checkValidString(String s) {
-        Deque<Character> stack = new LinkedList<>();
-        for (char ch : s.toCharArray()) {
-
+        int bal = 0;
+        for (int i = 0; i < s.length(); i++) {
+            bal += s.charAt(i) == ')' ? -1 : 1;
+            if (bal < 0) {
+                return false;
+            }
         }
+        if (bal == 0) {
+            return true;
+        }
+        bal = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            bal += s.charAt(i) == '(' ? -1 : 1;
+            if (bal < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        ValidParenthesis vp = new ValidParenthesis();
+        System.out.println(vp.checkValidString("*(*)((*"));
     }
 }

@@ -77,6 +77,7 @@ public class StrobogrammaticNumber {
 
     public static void main(String[] args) {
         StrobogrammaticNumber sn = new StrobogrammaticNumber();
+        System.out.println(sn.isStrobogrammatic("797"));
         System.out.println(sn.findStrobogrammatic(4));
         System.out.println(sn.findStrobogrammatic(5));
         System.out.println(sn.strobogrammaticInRange("0", "2147483647"));

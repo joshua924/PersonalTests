@@ -1,20 +1,22 @@
 package lc.sz1288;
 
+/**
+ * You are given coins of different denominations and a total amount of money.
+ * Write a function to compute the number of combinations that make up that amount.
+ * You may assume that you have infinite number of each kind of coin.
+ */
 public class CoinChange2 {
     public int change(int amount, int[] coins) {
-        int[][] dp = new int[amount + 1][coins.length + 1];
-        for (int j = 0; j <= coins.length; ++j) {
-            dp[0][j] = 1;
-        }
-        for (int i = 1; i <= amount; i++) {
-            for (int j = 1; j <= coins.length; j++) {
-                dp[i][j] = dp[i][j - 1];
-                if (coins[j - 1] <= i) {
-                    dp[i][j] += dp[i - coins[j - 1]][j];
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+        for (int coin : coins) {
+            for (int i = 1; i <= amount; i++) {
+                if (coin <= i) {
+                    dp[i] += dp[i - coin];
                 }
             }
         }
-        return dp[amount][coins.length];
+        return dp[amount];
     }
 
     public static void main(String[] args) {

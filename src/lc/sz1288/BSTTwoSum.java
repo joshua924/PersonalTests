@@ -1,37 +1,25 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BSTTwoSum {
     public boolean findTarget(TreeNode root, int k) {
-        List<Integer> traverse = new ArrayList<>();
-        inOrderTraverse(root, traverse);
-        return twoSum(traverse, k);
+        return twoSum(root, root, k);
     }
 
-    private void inOrderTraverse(TreeNode root, List<Integer> traverse) {
-        if (root == null) {
-            return;
+    private boolean twoSum(TreeNode low, TreeNode high, int k) {
+        if (low == null || high == null) {
+            return false;
         }
-        inOrderTraverse(root.left, traverse);
-        traverse.add(root.val);
-        inOrderTraverse(root.right, traverse);
-    }
-
-    private boolean twoSum(List<Integer> traverse, int k) {
-        int head = 0;
-        int tail = traverse.size() - 1;
-        while (head < tail) {
-            if (traverse.get(head) + traverse.get(tail) < k) {
-                head++;
-            } else if (traverse.get(head) + traverse.get(tail) > k) {
-                tail--;
-            } else {
+        int sum = low.val + high.val;
+        if (sum == k) {
+            if (low.val != high.val) {
                 return true;
             }
+            return twoSum(low.left, high.right, k);
+        } else if (sum < k) {
+            return twoSum(low.right, high, k) || twoSum(low, high.right, k);
+        } else {
+            return twoSum(low.left, high, k) || twoSum(low, high.left, k);
         }
-        return false;
     }
 
     public static void main(String[] args) {

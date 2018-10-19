@@ -52,12 +52,13 @@ public class ClosestPalindromeNumber {
         String c = mirror(s.toString());
         long diff3 = Math.abs(Long.parseLong(n) - Long.parseLong(c));
 
-        if (diff2 <= diff1 && diff2 <= diff3)
+        if (diff2 <= diff1 && diff2 <= diff3) {
             return b;
-        if (diff1 <= diff3)
+        }
+        if (diff1 <= diff3) {
             return a;
-        else
-            return c;
+        }
+        return c;
     }
 
     private String mirror(String s) {

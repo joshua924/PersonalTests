@@ -11,7 +11,7 @@ import java.util.Queue;
  * Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work.
  * You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
  */
-public class TreeSerDe {
+public class SerDeBinaryTree {
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         if (root == null) {
@@ -38,7 +38,7 @@ public class TreeSerDe {
     }
 
     public static void main(String[] args) {
-        TreeSerDe tsd = new TreeSerDe();
+        SerDeBinaryTree tsd = new SerDeBinaryTree();
         TreeNode root = tsd.deserialize("1,2,6,#,#,9,7,#,#,#,3,#,5,#,12,#,#");
         System.out.println(root);
         System.out.println(tsd.serialize(root));

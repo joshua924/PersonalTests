@@ -1,5 +1,6 @@
 package lc.sz1288.search.autocomplete;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,36 +58,30 @@ import java.util.stream.Collectors;
  * The user finished the input, the sentence "i a" should be saved as a historical sentence in system. And the following input will be counted as a new search.
  */
 public class AutocompleteSystem {
-    private TrieNode trie;
-    private TrieNode current;
-    private String prefix;
+    private Trie root;
+    private String current = "";
 
     public AutocompleteSystem(String[] sentences, int[] times) {
-        this.trie = TrieNode.fromSentences(sentences, times);
-        this.current = trie;
-        this.prefix = "";
+        root = new Trie();
+        for (int i = 0; i < sentences.length; i++) {
+            root.insert(sentences[i], times[i]);
+        }
     }
 
     public List<String> input(char c) {
-        switch (c) {
-            case '#':
-                trie.addSentence(prefix, 1);
-                current = trie;
-                prefix = "";
-                return Collections.emptyList();
-            default:
-                prefix += c;
-                if (current == null) {
-                    return Collections.emptyList();
-                }
-                current = current.getChild(c);
-                if (current == null) {
-                    return Collections.emptyList();
-                }
-                return current.getThreeMostFrequentSentences().stream()
-                        .map(s -> prefix + s.substring(1))
-                        .collect(Collectors.toList());
+        List<String> res = new ArrayList<>();
+        if (c == '#') {
+            root.insert(current, 1);
+            current = "";
+        } else {
+            current += c;
+            List<Trie.Node> list = root.findWithPrefix(current);
+            list.sort((a, b) -> a.frequency == b.frequency ? a.sentence.compareTo(b.sentence) : b.frequency - a.frequency);
+            for (int i = 0; i < Math.min(3, list.size()); i++) {
+                res.add(list.get(i).sentence);
+            }
         }
+        return res;
     }
 
     public static void main(String[] args) {

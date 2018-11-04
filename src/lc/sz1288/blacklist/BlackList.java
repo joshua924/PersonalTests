@@ -30,9 +30,9 @@ public class BlackList {
 
     public static void main(String[] args) {
         BlackList bl = new BlackList();
-        List<String> blackListWords = Arrays.asList("porn", "world war i", "china");
+        List<String> blackListWords = Arrays.asList("drama", "world war i", "china");
         List<String> sentences = Arrays.asList(
-                "I love porn",
+                "I love drama",
                 "I love world war i",
                 "world war i is awesome",
                 "I love world war ii",

@@ -41,7 +41,8 @@ public class SerDeBinaryTree {
         SerDeBinaryTree tsd = new SerDeBinaryTree();
         TreeNode root = tsd.deserialize("1,2,6,#,#,9,7,#,#,#,3,#,5,#,12,#,#");
         System.out.println(root);
-        System.out.println(tsd.serialize(root));
+        System.out.println(tsd.serialize(root).equals("1,2,6,#,#,9,7,#,#,#,3,#,5,#,12,#,#"));
         System.out.println(tsd.serialize(null));
+        System.out.println(tsd.deserialize("#"));
     }
 }

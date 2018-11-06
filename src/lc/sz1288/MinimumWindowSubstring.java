@@ -1,6 +1,7 @@
 package lc.sz1288;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class MinimumWindowSubstring {
@@ -10,33 +11,35 @@ public class MinimumWindowSubstring {
             count.put(ch, count.getOrDefault(ch, 0) + 1);
         }
         int minLen = Integer.MAX_VALUE;
+        int start = 0;
         int minStart = 0;
-        int left = 0;
         int match = 0;
-        for (int right = 0; right < s.length(); right++) {
-            char ch = s.charAt(right);
-            if (count.containsKey(ch)) {
-                count.put(ch, count.get(ch) - 1);
-                if (count.get(ch) >= 0) {
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            Integer currentCount = count.get(ch);
+            if (currentCount != null) {
+                count.put(ch, currentCount - 1);
+                if (currentCount >= 1) {
                     match++;
                 }
             }
             while (match == t.length()) {
-                if (right - left + 1 < minLen) {
-                    minStart = left;
-                    minLen = right - left + 1;
+                if (i - start + 1 < minLen) {
+                    minStart = start;
+                    minLen = i - start + 1;
                 }
-                char leftCh = s.charAt(left);
-                if (count.containsKey(leftCh)) {
-                    count.put(leftCh, count.get(leftCh) + 1);
-                    if (count.get(leftCh) > 0) {
+                char left = s.charAt(start);
+                Integer current = count.get(left);
+                if (current != null) {
+                    count.put(left, current + 1);
+                    if (current >= 0) {
                         match--;
                     }
                 }
-                left++;
+                start++;
             }
         }
-        return s.substring(minStart, minStart + minLen);
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
     }
 
     public static void main(String[] args) {

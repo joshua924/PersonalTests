@@ -3,62 +3,67 @@ package lc.sz1288;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+/**
+ * There is a new alien language which uses the latin alphabet. However, the order among letters are unknown to you.
+ * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language.
+ * Derive the order of letters in this language.
+ */
 public class AlienDictionary {
     public String alienOrder(String[] words) {
         Map<Character, Set<Character>> edges = new HashMap<>();
         Map<Character, Integer> inDegree = new HashMap<>();
-        String result = "";
-        if (words == null || words.length == 0) {
-            return result;
-        }
-        for (String s : words) {
-            for (char c : s.toCharArray()) {
-                inDegree.put(c, 0);
+
+        for (String word : words) {
+            for (char ch : word.toCharArray()) {
+                inDegree.put(ch, 0);
             }
         }
         for (int i = 0; i < words.length - 1; i++) {
-            String cur = words[i];
-            String next = words[i + 1];
-            int length = Math.min(cur.length(), next.length());
-            for (int j = 0; j < length; j++) {
-                char c1 = cur.charAt(j);
-                char c2 = next.charAt(j);
-                if (c1 != c2) {
-                    Set<Character> set = edges.getOrDefault(c1, new HashSet<>());
-                    if (set.add(c2)) {
-                        edges.put(c1, set);
-                        inDegree.put(c2, inDegree.get(c2) + 1);
+            String from = words[i];
+            String to = words[i + 1];
+            int min = Math.min(from.length(), to.length());
+            for (int j = 0; j < min; j++) {
+                char small = from.charAt(j);
+                char large = to.charAt(j);
+                if (small != large) {
+                    Set<Character> set = edges.get(small);
+                    if (set == null) {
+                        set = new HashSet<>();
                     }
+                    if (set.add(large)) {
+                        inDegree.put(large, inDegree.get(large) + 1);
+                    }
+                    edges.put(small, set);
                     break;
                 }
             }
         }
-        Queue<Character> q = new LinkedList<>();
-        for (char c : inDegree.keySet()) {
-            if (inDegree.get(c) == 0) {
-                q.add(c);
+        StringBuilder result = new StringBuilder();
+        Queue<Character> queue = new LinkedList<>();
+        for (Map.Entry<Character, Integer> entry : inDegree.entrySet()) {
+            if (entry.getValue() == 0) {
+                queue.add(entry.getKey());
             }
         }
-        while (!q.isEmpty()) {
-            char ch = q.remove();
-            result += ch;
+        while (!queue.isEmpty()) {
+            Character ch = queue.poll();
+            result.append(ch);
             if (edges.containsKey(ch)) {
-                for (char c2 : edges.get(ch)) {
-                    inDegree.put(c2, inDegree.get(c2) - 1);
-                    if (inDegree.get(c2) == 0) {
-                        q.add(c2);
+                for (char each : edges.get(ch)) {
+                    int value = inDegree.get(each) - 1;
+                    inDegree.put(each, value);
+                    if (value == 0) {
+                        queue.add(each);
                     }
                 }
             }
         }
-        if (result.length() != inDegree.size()) {
-            return "";
-        }
-        return result;
+        return result.length() == inDegree.size() ? result.toString() : "";
     }
 
     public static void main(String[] args) {

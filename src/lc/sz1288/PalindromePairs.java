@@ -29,31 +29,21 @@ public class PalindromePairs {
         for (int i = 0; i < words.length; i++) {
             map.put(words[i], i);
         }
-        if (map.containsKey("")) {
-            int index = map.get("");
-            for (int i = 0; i < words.length; i++) {
-                if (i != index && isPalindrome(words[i])) {
-                    res.add(Arrays.asList(i, index));
-                    res.add(Arrays.asList(index, i));
-                }
-            }
-        }
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
-            StringBuilder sb = new StringBuilder(word).reverse();
-            for (int j = sb.length(); j >= 0; j--) {
-                if (isPalindrome(sb.substring(j))) {
-                    String prefix = sb.substring(0, j);
-                    if (!prefix.equals(word) && map.containsKey(prefix)) {
-                        res.add(Arrays.asList(map.get(prefix), i));
+            for (int j = word.length(); j >= 0; j--) {
+                if (isPalindrome(word.substring(j))) {
+                    String suffix = new StringBuilder(word.substring(0, j)).reverse().toString();
+                    if (map.containsKey(suffix) && !suffix.equals(word)) {
+                        res.add(Arrays.asList(i, map.get(suffix)));
                     }
                 }
             }
-            for (int j = 0; j < sb.length(); j++) {
-                if (isPalindrome(sb.substring(0, j))) {
-                    String suffix = sb.substring(j);
-                    if (!suffix.equals(word) && map.containsKey(suffix)) {
-                        res.add(Arrays.asList(i, map.get(suffix)));
+            for (int j = 0; j <= word.length(); j++) {
+                if (isPalindrome(word.substring(0, j))) {
+                    String prefix = new StringBuilder(word.substring(j)).reverse().toString();
+                    if (map.containsKey(prefix) && !prefix.equals(word)) {
+                        res.add(Arrays.asList(map.get(prefix), i));
                     }
                 }
             }
@@ -62,9 +52,10 @@ public class PalindromePairs {
     }
 
     private boolean isPalindrome(String s) {
-        int length = s.length();
-        for (int i = 0; i < length / 2; i++) {
-            if (s.charAt(i) != s.charAt(length - i - 1)) {
+        int i = 0;
+        int j = s.length() - 1;
+        while (i < j) {
+            if (s.charAt(i++) != s.charAt(j--)) {
                 return false;
             }
         }

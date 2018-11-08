@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Design an in-memory file system to simulate the following functions:
@@ -22,6 +23,7 @@ import java.util.Map;
  */
 public class FileSystem {
     private Node root = new Node();
+    private Map<Node, Consumer<String>> callbacks = new HashMap<>();
 
     public List<String> ls(String path) {
         Node node = root;
@@ -58,6 +60,9 @@ public class FileSystem {
 
     public void addContentToFile(String path, String content) {
         Node node = root;
+        if (callbacks.containsKey(node)) {
+            callbacks.get(node).accept(path);
+        }
         String[] tokens = path.split("/");
         for (int i = 1; i < tokens.length - 1; i++) {
             String token = tokens[i];
@@ -67,10 +72,17 @@ public class FileSystem {
                 node.subNodes.put(token, dir);
             }
             node = node.subNodes.get(token);
+            if (callbacks.containsKey(node)) {
+                callbacks.get(node).accept(path);
+            }
         }
         String fileName = tokens[tokens.length - 1];
         if (node.subNodes.containsKey(fileName)) {
-            node.subNodes.get(fileName).content += content;
+            node = node.subNodes.get(fileName);
+            if (callbacks.containsKey(node)) {
+                callbacks.get(node).accept(path);
+            }
+            node.content += content;
         } else {
             Node file = new Node();
             file.content = content;
@@ -92,6 +104,19 @@ public class FileSystem {
         return node.content;
     }
 
+    public void watch(String path, Consumer<String> consumer) {
+        Node node = root;
+        String[] tokens = path.split("/");
+        for (int i = 1; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (!node.subNodes.containsKey(token)) {
+                return;
+            }
+            node = node.subNodes.get(token);
+        }
+        callbacks.put(node, consumer);
+    }
+
     public static class Node {
         private Map<String, Node> subNodes = new HashMap<>();
         private boolean isDir = false;
@@ -102,6 +127,7 @@ public class FileSystem {
         FileSystem fs = new FileSystem();
         fs.mkdir("/com/amazon/fno/zhoushua");
         fs.mkdir("/com/amazon/qingxiao");
+        fs.watch("/com/amazon/fno/zhoushua", s -> System.out.println("Hey yo yo, you modified " + s));
         System.out.println(fs.ls("/com/amazon"));
         fs.addContentToFile("/com/amazon/fno/zhoushua/file", "zhe shi yi ge wen jian!");
         System.out.println(fs.ls("/com/amazon/fno/zhoushua"));

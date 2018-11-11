@@ -19,9 +19,6 @@ import java.util.Arrays;
  */
 public class PourWater {
     public int[] pourWater(int[] heights, int V, int K) {
-        if (heights.length == 0) {
-            return heights;
-        }
         for (int i = 0; i < V; i++) {
             int drop = K;
             for (int index = K - 1; index >= 0 && heights[index] <= heights[index + 1]; index--) {
@@ -44,11 +41,54 @@ public class PourWater {
         return heights;
     }
 
+    public int[] pourWater_noWall(int[] heights, int V, int K) {
+        for (int i = 0; i < V; i++) {
+            int drop = K;
+            boolean flowOut = true;
+            for (int index = K - 1; index >= 0 && heights[index] <= heights[index + 1]; index--) {
+                if (heights[index] < heights[index + 1]) {
+                    drop = index;
+                }
+            }
+            for (int index = K - 1; index >= 0; index--) {
+                if (heights[index] > heights[index + 1]) {
+                    flowOut = false;
+                    break;
+                }
+            }
+            if (flowOut) {
+                continue;
+            }
+            heights[drop]++;
+        }
+        print(heights);
+        return heights;
+    }
+
+    public void print(int[] heights) {
+        int row = 0;
+        for (int h : heights) {
+            row = Math.max(row, h);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = row; i >= 1; i--) {
+            for (int j = 0; j < heights.length; j++) {
+                if (heights[j] < i) {
+                    sb.append("  ");
+                } else {
+                    sb.append("# ");
+                }
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb.toString());
+    }
+
     public static void main(String[] args) {
         PourWater pw = new PourWater();
         System.out.println(Arrays.toString(pw.pourWater(new int[]{2, 1, 1, 2, 1, 2, 2}, 4, 3)));
         System.out.println(Arrays.toString(pw.pourWater(new int[]{2, 1, 1, 2, 1, 2, 2}, 8, 1)));
-        System.out.println(Arrays.toString(pw.pourWater(new int[]{2, 1, 1, 2, 1, 2, 2}, 1000, 1)));
-        System.out.println(Arrays.toString(pw.pourWater(new int[]{1}, 4, 0)));
+        System.out.println(Arrays.toString(pw.pourWater_noWall(new int[]{2, 1, 1, 2, 1, 2, 2}, 4, 3)));
+        System.out.println(Arrays.toString(pw.pourWater_noWall(new int[]{2, 1, 1, 2, 1, 2, 2}, 8, 1)));
     }
 }

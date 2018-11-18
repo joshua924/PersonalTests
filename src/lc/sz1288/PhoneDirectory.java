@@ -1,12 +1,6 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.BitSet;
 
 /**
  * Design a Phone Directory which supports the following operations:
@@ -41,38 +35,45 @@ import java.util.Set;
  * directory.check(2);
  */
 public class PhoneDirectory {
-    Set<Integer> used = new HashSet<>();
-    Queue<Integer> available = new LinkedList<>();
+    BitSet bitSet;
     int max;
+    int smallestClearIndex;
 
     public PhoneDirectory(int maxNumbers) {
+        bitSet = new BitSet(maxNumbers);
         max = maxNumbers;
-        for (int i = 0; i < maxNumbers; i++) {
-            available.offer(i);
-        }
+        smallestClearIndex = 0;
     }
 
     public int get() {
-        Integer ret = available.poll();
-        if (ret == null) {
+        if (smallestClearIndex == max) {
             return -1;
         }
-        used.add(ret);
-        return ret;
+        int num = smallestClearIndex;
+        bitSet.set(smallestClearIndex);
+        smallestClearIndex = bitSet.nextClearBit(smallestClearIndex);
+        return num;
     }
 
     public boolean check(int number) {
-        return !used.contains(number);
+        return !bitSet.get(number);
     }
 
     public void release(int number) {
-        if (used.remove(number)) {
-            available.offer(number);
+        bitSet.clear(number);
+        if (number < smallestClearIndex) {
+            smallestClearIndex = number;
         }
     }
 
     public static void main(String[] args) {
-        PhoneDirectory pd = new PhoneDirectory(0);
+        PhoneDirectory pd = new PhoneDirectory(3);
         System.out.println(pd.get());
+        System.out.println(pd.get());
+        System.out.println(pd.check(2));
+        System.out.println(pd.get());
+        System.out.println(pd.check(2));
+        pd.release(2);
+        System.out.println(pd.check(2));
     }
 }

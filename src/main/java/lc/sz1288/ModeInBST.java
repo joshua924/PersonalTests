@@ -1,6 +1,7 @@
 package lc.sz1288;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModeInBST {
     public int[] findMode(TreeNode root) {

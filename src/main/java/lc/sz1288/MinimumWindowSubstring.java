@@ -1,7 +1,6 @@
 package lc.sz1288;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 public class MinimumWindowSubstring {

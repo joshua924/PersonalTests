@@ -15,6 +15,8 @@ import java.util.Iterator;
  * A runner to compare 2 image processing mechanisms: one that reads the image input stream header, another that
  * loads the whole image to get the dimensions. Currently the analysis show great difference between the 2,
  * especially on larger files. I would strongly recommend using header based processor in production applications.
+ * In my tests, for a 3MB image file, header based processor took an average of 16 milliseconds to get dimensions,
+ * while the image based processor took 2763 milliseconds on average.
  */
 public class ImageProcessingSpeedComparator {
     private static final int ITERATIONS = 3;

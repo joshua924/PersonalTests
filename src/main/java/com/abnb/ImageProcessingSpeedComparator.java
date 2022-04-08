@@ -1,12 +1,5 @@
 package com.abnb;
 
-import javafx.util.Pair;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 /**
  * A runner to compare 2 image processing mechanisms: one that reads the image input stream header, another that
  * loads the whole image to get the dimensions. Currently the analysis show great difference between the 2,

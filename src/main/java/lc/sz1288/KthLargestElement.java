@@ -1,39 +1,34 @@
 package lc.sz1288;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+/**
+ * Given an integer array nums and an integer k, return the kth largest element in the array.
+ *
+ * Note that it is the kth largest element in the sorted order, not the kth distinct element.
+ */
+@SuppressWarnings("ConstantConditions")
 public class KthLargestElement {
-    public int findKthLargest(int[] nums, int k) {
-        if (nums.length == 1) {
-            return nums[0];
+  public int findKthLargest(int[] nums, int k) {
+    Queue<Integer> queue = new PriorityQueue<>(k);
+    for (int num : nums) {
+      if (queue.size() == k) {
+        int smallestInQueue = queue.peek();
+        if (smallestInQueue < num) {
+          queue.poll();
+          queue.offer(num);
         }
-        int idx = -1;
-        int left = 0, right = nums.length - 1;
-        while (idx != k - 1) {
-            idx = partition(nums, left, right);
-            if (idx > k - 1) {
-                right = idx - 1;
-            } else {
-                left = idx + 1;
-            }
-        }
-        return nums[idx];
+      } else {
+        queue.offer(num);
+      }
     }
+    return queue.peek();
+  }
 
-    private int partition(int[] nums, int low, int high) {
-        int index = low;
-        int pivot = nums[high];
-        for (int i = low; i < high; i++) {
-            if (nums[i] > pivot) {
-                swap(nums, index, i);
-                index++;
-            }
-        }
-        swap(nums, index, high);
-        return index;
-    }
-
-    private void swap(int[] nums, int idx1, int idx2) {
-        int tmp = nums[idx1];
-        nums[idx1] = nums[idx2];
-        nums[idx2] = tmp;
-    }
+  public static void main(String[] args) {
+    KthLargestElement solution = new KthLargestElement();
+    System.out.println(solution.findKthLargest(new int[]{3, 2, 3, 1, 2, 4, 5, 5, 6}, 4));
+    System.out.println(solution.findKthLargest(new int[]{9}, 1));
+  }
 }

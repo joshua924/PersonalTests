@@ -9,13 +9,20 @@ import java.util.List;
 
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
 public class Node {
-    int val;
-    List<Node> children;
+  int val;
+  List<Node> children;
 
-    public Node(int val) {
-        this.val = val;
-        this.children = new ArrayList<>();
-    }
+  public Node(int val) {
+    this.val = val;
+    this.children = new ArrayList<>();
+  }
+
+  @Override
+  public String toString() {
+    return "Node{" +
+        "val=" + val +
+        ", children=" + children.size() +
+        '}';
+  }
 }

@@ -1,6 +1,10 @@
 package lc.sz1288;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * We are given a list schedule of employees, which represents the working time for each employee.

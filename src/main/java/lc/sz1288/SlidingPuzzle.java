@@ -1,6 +1,11 @@
 package lc.sz1288;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * On a 2x4 board, there are 7 tiles represented by the integers 1 through 7, and an empty square represented by 0.

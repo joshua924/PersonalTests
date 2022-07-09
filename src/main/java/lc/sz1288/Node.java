@@ -1,11 +1,9 @@
 package lc.sz1288;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 @AllArgsConstructor
 @EqualsAndHashCode

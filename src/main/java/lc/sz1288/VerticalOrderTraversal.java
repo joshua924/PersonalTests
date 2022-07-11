@@ -1,8 +1,10 @@
 package lc.sz1288;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 /**
  * Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).
@@ -11,32 +13,47 @@ import java.util.TreeMap;
  */
 public class VerticalOrderTraversal {
   public List<List<Integer>> verticalOrder(TreeNode root) {
-    TreeMap<Integer, TreeMap<Integer, List<Integer>>> map = new TreeMap<>();
-    preorder(root, 0, 0, map);
-
     List<List<Integer>> result = new ArrayList<>();
-    for (TreeMap<Integer, List<Integer>> column : map.values()) {
-      List<Integer> values = new ArrayList<>();
-      column
-          .values()
-          .forEach(values::addAll);
-      result.add(values);
+    if (root == null) {
+      return result;
+    }
+    Map<Integer, List<Integer>> nodeMap = new HashMap<>();
+    LinkedList<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+
+    queue.offer(new Pair<>(root, 0));
+    int minColumn = 0;
+    int maxColumn = 0;
+    while (!queue.isEmpty()) {
+      Pair<TreeNode, Integer> pair = queue.pollFirst();
+      TreeNode node = pair.first;
+      Integer column = pair.second;
+      if (node == null) {
+        continue;
+      }
+      minColumn = Integer.min(minColumn, column);
+      maxColumn = Integer.max(maxColumn, column);
+      if (!nodeMap.containsKey(column)) {
+        nodeMap.put(column, new ArrayList<>());
+      }
+      nodeMap.get(column).add(node.val);
+      queue.addLast(new Pair<>(node.left, column - 1));
+      queue.addLast(new Pair<>(node.right, column + 1));
+    }
+
+    for (int i = minColumn; i <= maxColumn; i++) {
+      result.add(nodeMap.get(i));
     }
     return result;
   }
 
-  private void preorder(TreeNode node, int order, int depth, TreeMap<Integer, TreeMap<Integer,
-      List<Integer>>> map) {
-    if (node == null) {
-      return;
+  private static class Pair<T,V> {
+    T first;
+    V second;
+
+    Pair(T first, V second) {
+      this.first = first;
+      this.second = second;
     }
-    TreeMap<Integer, List<Integer>> column = map.getOrDefault(order, new TreeMap<>());
-    List<Integer> list = column.getOrDefault(depth, new ArrayList<>());
-    list.add(node.val);
-    column.put(depth, list);
-    map.put(order, column);
-    preorder(node.left, order - 1, depth + 1, map);
-    preorder(node.right, order + 1, depth + 1, map);
   }
 
   public static void main(String[] args) {

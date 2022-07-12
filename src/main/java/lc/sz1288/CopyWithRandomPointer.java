@@ -1,32 +1,50 @@
 package lc.sz1288;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CopyWithRandomPointer {
-    public RandomListNode copyRandomList(RandomListNode head) {
-        if (head == null) {
-            return null;
-        }
-        RandomListNode res = new RandomListNode(head.label);
-        RandomListNode current = res;
-        while (current != null) {
-            copy(head, current);
-            head = head.next;
-            current = current.next;
-        }
-        return res;
+  public Node copyRandomList(Node head) {
+    return copy(head, new HashMap<>());
+  }
+
+  private Node copy(Node node, Map<Node, Node> visited) {
+    if (node == null) {
+      return null;
+    }
+    if (visited.containsKey(node)) {
+      return visited.get(node);
+    }
+    Node newNode = new Node(node.val);
+    visited.put(node, newNode);
+    newNode.next = copy(node.next, visited);
+    newNode.random = copy(node.random, visited);
+    return newNode;
+  }
+
+  private static class Node {
+    int val;
+    Node next, random;
+
+    Node(int val) {
+      this.val = val;
     }
 
-    private void copy(RandomListNode head, RandomListNode current) {
-        current.next = head.next == null ? null : new RandomListNode(head.next.label);
-        current.random = head.random == null ? null : new RandomListNode(head.random.label);
+    Node(int val, Node next, Node random) {
+      this.val = val;
+      this.next = next;
+      this.random = random;
     }
+  }
 
-    public class RandomListNode {
-        int label;
-        RandomListNode next, random;
-
-        RandomListNode(int x) {
-            this.label = x;
-        }
-    }
+  public static void main(String[] args) {
+    CopyWithRandomPointer solution = new CopyWithRandomPointer();
+    Node next = new Node(2, new Node(3), null);
+    Node head = new Node(1, next, next);
+    Node copied = solution.copyRandomList(head);
+    System.out.println(copied.val);
+    System.out.println(copied.next.val);
+    System.out.println(copied.random.val);
+  }
 }
 

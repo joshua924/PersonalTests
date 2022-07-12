@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).
@@ -18,13 +19,13 @@ public class VerticalOrderTraversal {
       return result;
     }
     Map<Integer, List<Integer>> nodeMap = new HashMap<>();
-    LinkedList<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+    Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
 
     queue.offer(new Pair<>(root, 0));
     int minColumn = 0;
     int maxColumn = 0;
     while (!queue.isEmpty()) {
-      Pair<TreeNode, Integer> pair = queue.pollFirst();
+      Pair<TreeNode, Integer> pair = queue.poll();
       TreeNode node = pair.first;
       Integer column = pair.second;
       if (node == null) {
@@ -36,8 +37,8 @@ public class VerticalOrderTraversal {
         nodeMap.put(column, new ArrayList<>());
       }
       nodeMap.get(column).add(node.val);
-      queue.addLast(new Pair<>(node.left, column - 1));
-      queue.addLast(new Pair<>(node.right, column + 1));
+      queue.offer(new Pair<>(node.left, column - 1));
+      queue.offer(new Pair<>(node.right, column + 1));
     }
 
     for (int i = minColumn; i <= maxColumn; i++) {

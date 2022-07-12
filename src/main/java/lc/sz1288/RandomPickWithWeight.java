@@ -1,5 +1,8 @@
 package lc.sz1288;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -25,32 +28,35 @@ import java.util.TreeMap;
  * Output: [null,0,1,1,1,0]
  */
 public class RandomPickWithWeight {
-    private final TreeMap<Integer, Integer> picks;
-    private final Random random;
-    private final int bound;
+  private final Random random;
+  private int[] sums;
 
-    public RandomPickWithWeight(int[] w) {
-        picks = new TreeMap<>();
-        int sum = 0;
-        for (int i = 0; i < w.length; i++) {
-            int weight = w[i];
-            sum += weight;
-            picks.put(sum, i);
-        }
-        random = new Random();
-        bound = sum;
-
-        System.out.println(picks);
+  public RandomPickWithWeight(int[] w) {
+    this.sums = new int[w.length];
+    int sum = 0;
+    for (int i = 0; i < w.length; i++) {
+      sum += w[i];
+      this.sums[i] = sum;
     }
+    this.random = new Random();
+  }
 
-    public int pickIndex() {
-        return picks.ceilingEntry(random.nextInt(bound) + 1).getValue();
+  public int pickIndex() {
+    int num = random.nextInt(sums[sums.length - 1]) + 1;
+    int index = Arrays.binarySearch(sums, num);
+    if (index < 0) {
+      index = -(index + 1);
     }
+    return index;
+  }
 
-    public static void main(String[] args) {
-        RandomPickWithWeight rp = new RandomPickWithWeight(new int[]{20, 5, 1});
-        for (int i = 0; i < 100; i++) {
-            System.out.print(rp.pickIndex() + " ");
-        }
+  public static void main(String[] args) {
+    RandomPickWithWeight rp = new RandomPickWithWeight(new int[]{20, 5, 1});
+    Map<Integer, Integer> counter = new HashMap<>();
+    for (int i = 0; i < 100; i++) {
+      int number = rp.pickIndex();
+      counter.put(number, counter.getOrDefault(number, 0) + 1);
     }
+    System.out.println(counter);
+  }
 }

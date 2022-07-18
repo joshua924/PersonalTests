@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@ToString
 public class TreeNode {
     int val;
     TreeNode left;
@@ -12,5 +11,12 @@ public class TreeNode {
 
     TreeNode(int x) {
         val = x;
+    }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+            "val=" + val +
+            '}';
     }
 }

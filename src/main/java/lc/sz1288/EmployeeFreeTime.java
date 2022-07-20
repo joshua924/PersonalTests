@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 /**
  * We are given a list schedule of employees, which represents the working time for each employee.
@@ -34,50 +34,33 @@ import java.util.PriorityQueue;
  * 2. 0 <= schedule[i].start < schedule[i].end <= 10^8.
  */
 public class EmployeeFreeTime {
-    public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
-        PriorityQueue<Work> intervals = new PriorityQueue<>(schedule.size());
-        for (int i = 0; i < schedule.size(); i++) {
-            List<Interval> list = schedule.get(i);
-            intervals.offer(new Work(i, 0, list.get(0)));
-        }
-        List<Interval> res = new ArrayList<>();
-        int end = -1;
-        while (!intervals.isEmpty()) {
-            Work work = intervals.poll();
-            if (work.interval.start > end && end >= 0) {
-                res.add(new Interval(end, work.interval.start));
-            }
-            end = Math.max(end, work.interval.end);
-            if (schedule.get(work.workerId).size() > work.index + 1) {
-                intervals.offer(new Work(work.workerId, work.index + 1, schedule.get(work.workerId).get(work.index + 1)));
-            }
-        }
-        return res;
+  public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
+    List<Interval> sorted = schedule
+        .stream()
+        .flatMap(List::stream)
+        .sorted((i1, i2) -> i1.start == i2.start ? i1.end - i2.end : i1.start - i2.start)
+        .collect(Collectors.toList());
+    List<Interval> res = new ArrayList<>();
+    int end = sorted.get(0).end;
+    for (Interval interval : sorted) {
+      if (interval.start > end) {
+        res.add(new Interval(end, interval.start));
+      }
+      end = Integer.max(interval.end, end);
     }
+    return res;
+  }
 
-    private static class Work implements Comparable<Work> {
-        int workerId;
-        int index;
-        Interval interval;
-
-        Work(int id, int index, Interval interval) {
-            this.workerId = id;
-            this.index = index;
-            this.interval = interval;
-        }
-
-        @Override
-        public int compareTo(Work o) {
-            return interval.start != o.interval.start ? interval.start - o.interval.start : interval.end - o.interval.end;
-        }
-    }
-
-    public static void main(String[] args) {
-        EmployeeFreeTime eft = new EmployeeFreeTime();
-        List<List<Interval>> schedule = Arrays.asList(
-                Arrays.asList(new Interval(1, 3), new Interval(6, 7)),
-                Collections.singletonList(new Interval(2, 4)),
-                Arrays.asList(new Interval(2, 5), new Interval(9, 12)));
-        System.out.println(eft.employeeFreeTime(schedule));
-    }
+  public static void main(String[] args) {
+    EmployeeFreeTime eft = new EmployeeFreeTime();
+    List<List<Interval>> schedule1 = Arrays.asList(
+        Arrays.asList(new Interval(1, 3), new Interval(6, 7)),
+        Collections.singletonList(new Interval(2, 4)),
+        Arrays.asList(new Interval(2, 5), new Interval(9, 12)));
+    System.out.println(eft.employeeFreeTime(schedule1));
+    List<List<Interval>> schedule2 = Arrays.asList(
+        Arrays.asList(new Interval(0, 25), new Interval(30, 40)),
+        Arrays.asList(new Interval(4, 16), new Interval(20, 28)));
+    System.out.println(eft.employeeFreeTime(schedule2));
+  }
 }

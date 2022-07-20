@@ -9,37 +9,41 @@ import java.util.LinkedList;
  * The expression string may contain open ( and closing parentheses ), the plus + or minus sign -, non-negative integers and empty spaces .
  */
 public class BasicCalculator {
-    public int calculate(String s) {
-        Deque<Integer> stack = new LinkedList<>();
-        int rs = 0;
-        int sign = 1;
-        stack.push(1);
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                System.out.println(stack);
-                stack.push(stack.peekFirst() * sign);
-                System.out.println(stack);
-                sign = 1;
-            } else if (s.charAt(i) == ')') {
-                stack.pop();
-            } else if (s.charAt(i) == '+') {
-                sign = 1;
-            } else if (s.charAt(i) == '-') {
-                sign = -1;
-            } else if (s.charAt(i) != ' ') {
-                int num = s.charAt(i) - '0';
-                while (i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
-                    num = num * 10 + s.charAt(++i) - '0';
-                }
-                rs += sign * stack.peekFirst() * num;
-            }
-        }
-        return rs;
+  public int calculate(String s) {
+    Deque<Integer> stack = new LinkedList<>();
+    int sign = 1;
+    int result = 0;
+    int current = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char ch = s.charAt(i);
+      if (Character.isDigit(ch)) {
+        current = current * 10 + (ch - '0');
+      } else if (ch == '(') {
+        stack.push(result);
+        stack.push(sign);
+        sign = 1;
+        result = 0;
+      } else if (ch == ')') {
+        result += current * sign;
+        result *= stack.pop();
+        result += stack.pop();
+        current = 0;
+      } else if (ch == '+') {
+        result += current * sign;
+        sign = 1;
+        current = 0;
+      } else if (ch == '-') {
+        result += current * sign;
+        sign = -1;
+        current = 0;
+      }
     }
+    return result;
+  }
 
-    public static void main(String[] args) {
-        BasicCalculator bc = new BasicCalculator();
-        System.out.println(bc.calculate("2-(1 + 2) "));
-//        System.out.println(bc.calculate(" ( 1+(4+5+2)-3)+(6+8)"));
-    }
+  public static void main(String[] args) {
+    BasicCalculator bc = new BasicCalculator();
+    System.out.println(bc.calculate("2-(1 + 2) "));
+    System.out.println(bc.calculate(" ( 1+(4+5+2)-3)+(6+8)"));
+  }
 }

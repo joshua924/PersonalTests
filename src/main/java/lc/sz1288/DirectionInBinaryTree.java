@@ -1,7 +1,5 @@
 package lc.sz1288;
 
-import java.util.Arrays;
-
 public class DirectionInBinaryTree {
   public String getDirections(TreeNode root, int startValue, int destValue) {
     TreeNode lca = findLowestAncestor(root, startValue, destValue);

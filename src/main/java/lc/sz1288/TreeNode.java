@@ -1,7 +1,6 @@
 package lc.sz1288;
 
 import lombok.AllArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
 public class TreeNode {

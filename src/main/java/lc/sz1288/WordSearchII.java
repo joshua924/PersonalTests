@@ -25,7 +25,7 @@ import java.util.List;
 public class WordSearchII {
     public List<String> findWords(char[][] board, String[] words) {
         List<String> res = new ArrayList<>();
-        TrieNode root = TrieNode.buildTrie(words);
+        Trie root = Trie.buildTrie(words);
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 dfs(board, i, j, root, res);
@@ -34,7 +34,7 @@ public class WordSearchII {
         return res;
     }
 
-    private void dfs(char[][] board, int i, int j, TrieNode p, List<String> res) {
+    private void dfs(char[][] board, int i, int j, Trie p, List<String> res) {
         char c = board[i][j];
         if (c == '#' || p.next[c - 'a'] == null) {
             return;
@@ -58,27 +58,6 @@ public class WordSearchII {
             dfs(board, i, j + 1, p, res);
         }
         board[i][j] = c;
-    }
-
-    static class TrieNode {
-        TrieNode[] next = new TrieNode[26];
-        String word;
-
-        static TrieNode buildTrie(String[] words) {
-            TrieNode root = new TrieNode();
-            for (String w : words) {
-                TrieNode p = root;
-                for (char c : w.toCharArray()) {
-                    int i = c - 'a';
-                    if (p.next[i] == null) {
-                        p.next[i] = new TrieNode();
-                    }
-                    p = p.next[i];
-                }
-                p.word = w;
-            }
-            return root;
-        }
     }
 
     public static void main(String[] args) {

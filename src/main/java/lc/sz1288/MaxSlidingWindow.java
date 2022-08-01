@@ -2,7 +2,6 @@ package lc.sz1288;
 
 import java.util.Arrays;
 import java.util.TreeMap;
-import java.util.stream.IntStream;
 
 /**
  * You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right.

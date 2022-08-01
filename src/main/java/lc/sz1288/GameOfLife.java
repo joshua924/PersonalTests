@@ -17,51 +17,60 @@ import java.util.Arrays;
  * current state, where births and deaths occur simultaneously.
  */
 public class GameOfLife {
-    public void gameOfLife(int[][] board) {
-        if (board == null || board.length == 0) {
-            return;
-        }
-        int m = board.length;
-        int n = board[0].length;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                int liveNeighbors = liveNeighbors(board, i, j, m, n);
-                if (board[i][j] == 1 && liveNeighbors >= 2 && liveNeighbors <= 3) {
-                    board[i][j] = 3;
-                }
-                if (board[i][j] == 0 && liveNeighbors == 3) {
-                    board[i][j] = 2;
-                }
-            }
-        }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                board[i][j] >>= 1;
-            }
-        }
-    }
+  private static final int[][] DIRS = {
+      {-1, -1},
+      {-1, 0},
+      {-1, 1},
+      {0, -1},
+      {0, 1},
+      {1, -1},
+      {1, 0},
+      {1, 1}
+  };
 
-    private int liveNeighbors(int[][] board, int x, int y, int m, int n) {
-        int count = 0;
-        for (int i = Math.max(0, x - 1); i <= Math.min(m - 1, x + 1); i++) {
-            for (int j = Math.max(0, y - 1); j <= Math.min(n - 1, y + 1); j++) {
-                if (board[i][j] > 0) {
-                    count++;
-                }
-            }
+  public void gameOfLife(int[][] board) {
+    for (int i = 0; i < board.length; i++) {
+      for (int j = 0; j < board[0].length; j++) {
+        int count = countLiveNeighbor(board, i, j);
+        if (board[i][j] == 1 && (count < 2 || count > 3)) {
+          board[i][j] = 2;
         }
-        return board[x][y] > 0 ? count - 1 : count;
+        if (board[i][j] == 0 && count == 3) {
+          board[i][j] = 3;
+        }
+      }
     }
+    for (int i = 0; i < board.length; i++) {
+      for (int j = 0; j < board[0].length; j++) {
+        if (board[i][j] > 1) {
+          board[i][j] -= 2;
+        }
+      }
+    }
+  }
 
-    public static void main(String[] args) {
-        GameOfLife gol = new GameOfLife();
-        int[][] board = new int[][]{{0, 1, 0}, {0, 0, 1}, {1, 1, 1}, {0, 0, 0}};
-        for (int i = 0; i < 3; i++) {
-            gol.gameOfLife(board);
-            for (int[] row : board) {
-                System.out.println(Arrays.toString(row));
-            }
-            System.out.println("---------------------------------");
-        }
+  private int countLiveNeighbor(int[][] board, int i, int j) {
+    int res = 0;
+    for (int[] dir : DIRS) {
+      int x = i + dir[0];
+      int y = j + dir[1];
+      if (x < 0 || x >= board.length || y < 0 || y >= board[0].length) {
+        continue;
+      }
+      if (board[x][y] == 1 || board[x][y] == 2) {
+        res++;
+      }
     }
+    return res;
+  }
+
+  public static void main(String[] args) {
+    GameOfLife gol = new GameOfLife();
+    int[][] board = new int[][]{{0, 1, 0}, {0, 0, 1}, {1, 1, 1}, {0, 0, 0}};
+    gol.gameOfLife(board);
+    for (int[] row : board) {
+      System.out.println(Arrays.toString(row));
+      System.out.println("---------------------------------");
+    }
+  }
 }

@@ -1,9 +1,7 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * You are given an n x n binary matrix grid where 1 represents land and 0 represents water.

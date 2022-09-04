@@ -14,15 +14,27 @@ package lc.sz1288;
  * its upper left corner (row1, col1) and lower right corner (row2, col2).
  */
 public class NumMatrix {
+  private final int[][] matrix;
   private final int[][] sums;
   private final int m;
   private final int n;
 
   public NumMatrix(int[][] matrix) {
+    this.matrix = matrix;
     this.m = matrix.length;
     this.n = matrix[0].length;
     this.sums = new int[m][n];
     fillSums(matrix);
+  }
+
+  public void update(int row, int col, int val) {
+    int diff = val - matrix[row][col];
+    matrix[row][col] = val;
+    for (int i = row; i < m; i++) {
+      for (int j = col; j < n; j++) {
+        sums[i][j] += diff;
+      }
+    }
   }
 
   public int sumRegion(int row1, int col1, int row2, int col2) {
@@ -55,5 +67,19 @@ public class NumMatrix {
         sums[i][j] = sums[i - 1][j] + sums[i][j - 1] - sums[i - 1][j - 1] + matrix[i][j];
       }
     }
+  }
+
+  public static void main(String[] args) {
+    int[][] matrix = {
+        {3, 0, 1, 4, 2},
+        {5, 6, 3, 2, 1},
+        {1, 2, 0, 1, 5},
+        {4, 1, 0, 1, 7},
+        {1, 0, 3, 0, 5}
+    };
+    NumMatrix solution = new NumMatrix(matrix);
+    System.out.println(solution.sumRegion(2, 1, 4, 3));
+    solution.update(3, 2, 100);
+    System.out.println(solution.sumRegion(2, 1, 4, 3));
   }
 }

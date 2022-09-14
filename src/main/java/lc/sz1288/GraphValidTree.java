@@ -54,8 +54,8 @@ public class GraphValidTree {
           root[rootY] = rootX;
           rank[rootX] += 1;
         }
-      }
       count--;
+      }
     }
 
     public boolean connected(int x, int y) {

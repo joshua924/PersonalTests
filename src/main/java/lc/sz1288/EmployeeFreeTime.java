@@ -3,7 +3,10 @@ package lc.sz1288;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -33,20 +36,27 @@ import java.util.stream.Collectors;
  * 1. schedule and schedule[i] are lists with lengths in range [1, 50].
  * 2. 0 <= schedule[i].start < schedule[i].end <= 10^8.
  */
+@SuppressWarnings("ConstantConditions")
 public class EmployeeFreeTime {
   public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
-    List<Interval> sorted = schedule
-        .stream()
-        .flatMap(List::stream)
-        .sorted((i1, i2) -> i1.start == i2.start ? i1.end - i2.end : i1.start - i2.start)
-        .collect(Collectors.toList());
-    List<Interval> res = new ArrayList<>();
-    int end = sorted.get(0).end;
-    for (Interval interval : sorted) {
-      if (interval.start > end) {
+    PriorityQueue<int[]> queue =
+        new PriorityQueue<>(Comparator.comparingInt(s -> schedule.get(s[0]).get(s[1]).start));
+    for (int i = 0; i < schedule.size(); i++) {
+      queue.offer(new int[] {i, 0});
+    }
+
+    List<Interval> res = new LinkedList<>();
+    int end = schedule.get(queue.peek()[0]).get(queue.peek()[1]).end;
+    while (!queue.isEmpty()) {
+      int[] current = queue.poll();
+      Interval interval = schedule.get(current[0]).get(current[1]);
+      if (end < interval.start) {
         res.add(new Interval(end, interval.start));
       }
-      end = Integer.max(interval.end, end);
+      end = Integer.max(end, interval.end);
+      if (schedule.get(current[0]).size() > current[1] + 1) {
+        queue.offer(new int[]{current[0], current[1] + 1});
+      }
     }
     return res;
   }

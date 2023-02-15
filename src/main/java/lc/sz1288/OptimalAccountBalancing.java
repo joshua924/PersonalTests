@@ -1,6 +1,10 @@
 package lc.sz1288;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A group of friends went on holiday and sometimes lent each other money. For example, Alice paid for Bill's lunch for $10.

@@ -22,7 +22,7 @@ public class WordBreak {
         canBreak[0] = true;
         for (int i = 0; i < length; i++) {
             for (int j = i; j >= 0; j--) {
-                if (dict.contains(s.substring(j, i + 1)) && canBreak[j]) {
+                if (canBreak[j] && dict.contains(s.substring(j, i + 1))) {
                     canBreak[i + 1] = true;
                     break;
                 }

@@ -1,9 +1,7 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A 2d grid map of m rows and n columns is initially filled with water. We may perform an addLand operation which turns the water at position (row, col) into a land.
@@ -16,65 +14,76 @@ import java.util.Set;
  * Output: [1,1,2,3]
  */
 public class NumberOfIslandsII {
-    private static final int[][] DIRS = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+  private static final int[][] DIRS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
-    public List<Integer> numIslands2(int m, int n, int[][] positions) {
-        List<Integer> res = new ArrayList<>();
-        int[][] ids = new int[m][n];
-        int num_islands = 0;
-        int id = 0;
-
-        for (int[] pos : positions) {
-            int x = pos[0];
-            int y = pos[1];
-            if (ids[x][y] != 0) {
-                res.add(num_islands);
-                continue;
-            }
-            Set<Integer> islands = new HashSet<>();
-            if (x > 0) {
-                islands.add(ids[x - 1][y]);
-            }
-            if (x < m - 1) {
-                islands.add(ids[x + 1][y]);
-            }
-            if (y > 0) {
-                islands.add(ids[x][y - 1]);
-            }
-            if (y < n - 1) {
-                islands.add(ids[x][y + 1]);
-            }
-            islands.remove(0);
-            if (islands.size() == 0) {
-                ids[x][y] = ++id;
-                num_islands += 1;
-                res.add(num_islands);
-            } else if (islands.size() == 1) {
-                ids[x][y] = islands.iterator().next();
-                res.add(num_islands);
-            } else {
-                addToIsland(ids, x, y, m, n, ++id);
-                num_islands += 1 - islands.size();
-                res.add(num_islands);
-            }
+  public List<Integer> numIslands2(int m, int n, int[][] positions) {
+    int[][] matrix = new int[m][n];
+    UnionFind uf = new UnionFind(m * n);
+    List<Integer> result = new LinkedList<>();
+    int count = 0;
+    for (int[] position : positions) {
+      int i = position[0];
+      int j = position[1];
+      if (matrix[i][j] == 1) {
+        continue;
+      }
+      matrix[i][j] = 1;
+      count++;
+      for (int[] dir : DIRS) {
+        int x = i + dir[0];
+        int y = j + dir[1];
+        if (x >= m || x < 0 || y >= n || y < 0 || matrix[x][y] != 1) {
+          continue;
         }
-        return res;
+        count += uf.union(i * n + j, x * n + y);
+      }
+      result.add(count);
+    }
+    return result;
+  }
+
+  public static class UnionFind {
+    private final int[] root;
+    private final int[] rank;
+
+    public UnionFind(int size) {
+      root = new int[size];
+      rank = new int[size];
+      for (int i = 0; i < size; i++) {
+        root[i] = i;
+        rank[i] = 1;
+      }
     }
 
-    private void addToIsland(int[][] ids, int x, int y, int m, int n, int islandId) {
-        ids[x][y] = islandId;
-        for (int[] dir : DIRS) {
-            int newX = x + dir[0];
-            int newY = y + dir[1];
-            if (newX == m || newX < 0 || newY == n || newY < 0 || ids[newX][newY] == islandId || ids[newX][newY] == 0) {
-                continue;
-            }
-            addToIsland(ids, newX, newY, m, n, islandId);
+    public int find(int x) {
+      if (x == root[x]) {
+        return x;
+      }
+      return root[x] = find(root[x]);
+    }
+
+    // return -1 if the union reduced number of islands
+    public int union(int x, int y) {
+      int res = 0;
+      int rootX = find(x);
+      int rootY = find(y);
+      if (rootX != rootY) {
+        if (rank[rootX] > rank[rootY]) {
+          root[rootY] = rootX;
+        } else if (rank[rootX] < rank[rootY]) {
+          root[rootX] = rootY;
+        } else {
+          root[rootY] = rootX;
+          rank[rootX] += 1;
         }
+        res--;
+      }
+      return res;
     }
+  }
 
-    public static void main(String[] args) {
-        NumberOfIslandsII noi = new NumberOfIslandsII();
-        System.out.println(noi.numIslands2(3, 3, new int[][]{{0, 1}, {1, 2}, {2, 1}, {1, 0}, {0, 2}, {0, 0}, {1, 1}}));
-    }
+  public static void main(String[] args) {
+    NumberOfIslandsII noi = new NumberOfIslandsII();
+    System.out.println(noi.numIslands2(3, 3, new int[][]{{0, 1}, {1, 2}, {2, 1}, {1, 0}, {0, 2}, {0, 0}, {1, 1}}));
+  }
 }

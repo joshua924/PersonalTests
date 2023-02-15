@@ -31,12 +31,10 @@ public class LinkedListCycle {
         }
         ListNode slow = head.next;
         ListNode fast = head.next.next;
-        int step = 1;
         while (slow != fast && fast != null) {
             if (fast.next == null) {
                 return null;
             }
-            step++;
             fast = fast.next.next;
             slow = slow.next;
         }

@@ -35,52 +35,52 @@ import java.util.PriorityQueue;
  * Answers within 10^-5 of the correct answer will be considered correct.
  */
 public class MinCostToHireWorkers {
-    public double mincostToHireWorkers(int[] quality, int[] wage, int K) {
-        int len = quality.length;
-        Worker[] workers = new Worker[len];
-        for (int i = 0; i < len; i++) {
-            workers[i] = new Worker(quality[i], wage[i]);
-        }
-        Arrays.sort(workers);
-        double min = Double.MAX_VALUE;
-        int qualitySum = 0;
-        PriorityQueue<Integer> candidates = new PriorityQueue<>(Comparator.reverseOrder());
-        for (Worker worker : workers) {
-            candidates.offer(worker.quality);
-            qualitySum += worker.quality;
-            if (candidates.size() > K) {
-                qualitySum -= candidates.poll();
-            }
-            if (candidates.size() == K) {
-                min = Math.min(min, worker.getRatio() * qualitySum);
-            }
-        }
-        return min;
+  public double mincostToHireWorkers(int[] quality, int[] wage, int K) {
+    int len = quality.length;
+    Worker[] workers = new Worker[len];
+    for (int i = 0; i < len; i++) {
+      workers[i] = new Worker(quality[i], wage[i]);
+    }
+    Arrays.sort(workers);
+    double min = Double.MAX_VALUE;
+    int qualitySum = 0;
+    PriorityQueue<Integer> candidates = new PriorityQueue<>(Comparator.reverseOrder());
+    for (Worker worker : workers) {
+      candidates.offer(worker.quality);
+      qualitySum += worker.quality;
+      if (candidates.size() > K) {
+        qualitySum -= candidates.poll();
+      }
+      if (candidates.size() == K) {
+        min = Math.min(min, worker.getRatio() * qualitySum);
+      }
+    }
+    return min;
+  }
+
+  private static class Worker implements Comparable<Worker> {
+    int quality;
+    int wage;
+
+    Worker(int quality, int wage) {
+      this.quality = quality;
+      this.wage = wage;
     }
 
-    private static class Worker implements Comparable<Worker> {
-        int quality;
-        int wage;
-
-        Worker(int quality, int wage) {
-            this.quality = quality;
-            this.wage = wage;
-        }
-
-        double getRatio() {
-            return (double) wage / quality;
-        }
-
-        @Override
-        public int compareTo(Worker o) {
-            return Double.compare(getRatio(), o.getRatio());
-        }
+    double getRatio() {
+      return (double) wage / quality;
     }
 
-    public static void main(String[] args) {
-        MinCostToHireWorkers mc = new MinCostToHireWorkers();
-        System.out.println(mc.mincostToHireWorkers(new int[]{10, 20, 5}, new int[]{70, 50, 30}, 2));
-        System.out.println(mc.mincostToHireWorkers(new int[]{3, 1, 10, 10, 1}, new int[]{4, 8, 2, 2, 7}, 3));
-        System.out.println(mc.mincostToHireWorkers(new int[]{3}, new int[]{5000}, 1));
+    @Override
+    public int compareTo(Worker o) {
+      return Double.compare(getRatio(), o.getRatio());
     }
+  }
+
+  public static void main(String[] args) {
+    MinCostToHireWorkers mc = new MinCostToHireWorkers();
+    System.out.println(mc.mincostToHireWorkers(new int[]{10, 20, 5}, new int[]{70, 50, 30}, 2));
+    System.out.println(mc.mincostToHireWorkers(new int[]{3, 1, 10, 10, 1}, new int[]{4, 8, 2, 2, 7}, 3));
+    System.out.println(mc.mincostToHireWorkers(new int[]{3}, new int[]{5000}, 1));
+  }
 }

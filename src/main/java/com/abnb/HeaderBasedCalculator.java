@@ -1,14 +1,13 @@
 package com.abnb;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import javafx.util.Pair;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 
 public class HeaderBasedCalculator {
     public Pair<Long, Long> getWidthHeight(String filePath) {

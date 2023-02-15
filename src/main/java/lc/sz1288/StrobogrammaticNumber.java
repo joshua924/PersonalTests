@@ -1,6 +1,11 @@
 package lc.sz1288;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).

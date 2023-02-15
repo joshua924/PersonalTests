@@ -9,12 +9,28 @@ package lc.sz1288;
  * Given the following binary tree:  root = [3,5,1,6,2,0,8,null,null,7,4]
  */
 public class LowestCommonAncestor {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) {
-            return root;
-        }
-        TreeNode leftFound = lowestCommonAncestor(root.left, p, q);
-        TreeNode rightFound = lowestCommonAncestor(root.right, p, q);
-        return leftFound != null ? (rightFound != null ? root : leftFound) : rightFound;
+  public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null || root == p || root == q) {
+      return root;
     }
+    TreeNode leftAncestor = lowestCommonAncestor(root.left, p, q);
+    TreeNode rightAncestor = lowestCommonAncestor(root.right, p, q);
+    if (leftAncestor != null && rightAncestor != null) {
+      return root;
+    } else if (rightAncestor != null) {
+      return rightAncestor;
+    } else {
+      return leftAncestor;
+    }
+  }
+
+  public static void main(String[] args) {
+    TreeNode left = new TreeNode(1);
+    TreeNode right = new TreeNode(5);
+    TreeNode root = new TreeNode(3);
+    root.left = left;
+    root.right = right;
+    LowestCommonAncestor solution = new LowestCommonAncestor();
+    System.out.println(solution.lowestCommonAncestor(root, left, right));
+  }
 }

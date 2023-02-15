@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class MedianOfTwoSortedListTest {
 
-    private MedianOfTwoSortedList solution = new MedianOfTwoSortedList();
+    private final MedianOfTwoSortedList solution = new MedianOfTwoSortedList();
 
     @Test
     public void testCase1() {

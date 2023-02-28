@@ -11,13 +11,15 @@ public class ValidatorRegex {
     }
 
     private static String extractPath() {
-        String s = "[recursive_violation:request:[recursive_violation:damagedItemInfo:[non_null_violation:cost]]]";
+        String s = "[recursive_violation:placeholder:[recursive_violation:damagedItemInfo:[non_null_violation:cost]]]";
         return Stream.of(s.split(":\\[")).map(
                 each -> {
                     String segment = each.replaceAll("[\\[|\\]]", "");
                     String fieldName = segment.split(":")[1];
                     return fieldName.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
                 }
-        ).collect(Collectors.joining("."));
+        )
+        .filter(fieldName -> !"placeholder".equals(fieldName))
+        .collect(Collectors.joining("."));
     }
 }

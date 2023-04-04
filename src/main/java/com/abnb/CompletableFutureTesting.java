@@ -10,13 +10,13 @@ public class CompletableFutureTesting {
      */
     public static void main(String[] args) {
         CompletableFuture<Boolean> failedFuture = new CompletableFuture<>();
-        failedFuture.completeExceptionally(new CompletionException(new IllegalArgumentException("bad input")));
+        failedFuture.completeExceptionally(new CompletionException(new IllegalArgumentException(new ArithmeticException())));
 
         failedFuture.exceptionally(
                 e -> {
-                    System.out.println(e.getClass().getName());
-                    System.out.println(e instanceof IllegalArgumentException);
+                    System.out.println(e.toString());
                     System.out.println(e.getLocalizedMessage());
+                    System.out.println(e.getMessage());
                     return false;
                 }
         ).join();

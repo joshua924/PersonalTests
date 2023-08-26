@@ -1,7 +1,6 @@
 package com.abnb;
 
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.Map;
 
@@ -17,13 +16,15 @@ public class CastingTest {
                 3, "random"
         );
 
-        Boolean a = (Boolean) objectMap.get(1);
-        if (BooleanUtils.isTrue(a)) {
-            System.out.println("got it 1");
-        }
-        Boolean b = (Boolean) objectMap.get(4);
-        if (BooleanUtils.isTrue(b)) {
-            System.out.println("got it 2");
+        try {
+            Boolean a = (Boolean) objectMap.get(1);
+            System.out.println("a is " + a);
+            Boolean b = (Boolean) objectMap.get(4);
+            System.out.println("b is " + b);
+            boolean c = (boolean) objectMap.get(5);
+            System.out.println("c is " + c);
+        } catch (Exception e) {
+            System.out.println("failed");
         }
     }
 }

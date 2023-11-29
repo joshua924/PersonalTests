@@ -1,10 +1,11 @@
 package com.abnb;
 
+import javafx.util.Pair;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javafx.util.Pair;
-import javax.imageio.ImageIO;
 
 public class ImageBasedCalculator {
     public Pair<Long, Long> getWidthHeight(String filePath) {

@@ -1,5 +1,7 @@
 package com.abnb;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
@@ -7,7 +9,6 @@ import java.security.Security;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class VerifySHASignature {
     private static final String SHA_256_WITH_RSA = "SHA256withRSA";

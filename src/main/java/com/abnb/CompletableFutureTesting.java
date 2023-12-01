@@ -2,13 +2,24 @@ package com.abnb;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 
 public class CompletableFutureTesting {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        testFutureExecution();
+    }
+
+    // when "get()" is used, the completable future becomes blocking
+    private static void testFutureExecution() throws ExecutionException, InterruptedException {
+        MockFuture.create(1).get();
+        MockFuture.create(2).get();
+        MockFuture.create(3).get();
+    }
 
     /**
      * the exceptionally() method will not wrap or unwrap the exception.
      */
-    public static void main(String[] args) {
+    private static void testWrapping() {
         CompletableFuture<Boolean> failedFuture = new CompletableFuture<>();
         failedFuture.completeExceptionally(new CompletionException(new IllegalArgumentException(new ArithmeticException())));
 
@@ -43,5 +54,22 @@ public class CompletableFutureTesting {
 
     private static boolean validate() {
         throw new IllegalArgumentException("bad input");
+    }
+
+    static class MockFuture {
+        public static CompletableFuture<Integer> create(int res) {
+            return CompletableFuture.supplyAsync(
+                    () -> {
+                        System.out.println("Into the future");
+                        try {
+                            Thread.sleep(1000L);
+                        } catch (InterruptedException e) {
+                            System.out.println("ah ah ah");
+                        }
+                        System.out.println("result " + res);
+                        return res;
+                    }
+            );
+        }
     }
 }

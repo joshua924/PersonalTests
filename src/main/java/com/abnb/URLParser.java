@@ -14,5 +14,15 @@ public class URLParser {
         } catch (MalformedURLException e) {
             throw new RuntimeException("Invalid URL " + s);
         }
+
+        s = "https://a.b.c/d/e/f";
+        try {
+            URL url = new URL(s);
+            System.out.println(url.getHost());
+            System.out.println(url.getPath());
+            System.out.println(url.getQuery());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Invalid URL " + s);
+        }
     }
 }

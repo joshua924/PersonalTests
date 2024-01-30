@@ -1,6 +1,6 @@
 package com.abnb;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -19,7 +19,7 @@ public class HeaderBasedCalculator {
                 reader.setInput(inputStream);
                 long width = reader.getWidth(0);
                 long height = reader.getHeight(0);
-                return new Pair<>(width, height);
+                return Pair.of(width, height);
             } finally {
                 reader.dispose();
             }

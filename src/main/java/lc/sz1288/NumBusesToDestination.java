@@ -1,10 +1,6 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * You are given an array routes representing bus routes where routes[i] is a bus route that the ith bus repeats forever.

@@ -1,9 +1,10 @@
 package lc.sz1288;
 
+import lombok.Value;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import lombok.Value;
 
 public class Canvas {
 

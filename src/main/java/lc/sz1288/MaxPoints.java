@@ -1,11 +1,8 @@
 package lc.sz1288;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 import lombok.ToString;
+
+import java.util.*;
 
 /**
  * Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane,

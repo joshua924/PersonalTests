@@ -1,10 +1,6 @@
 package lc.sz1288;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.

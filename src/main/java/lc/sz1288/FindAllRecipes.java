@@ -1,13 +1,8 @@
 package lc.sz1288;
 
 import com.google.common.collect.ImmutableList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+
+import java.util.*;
 
 /**
  * You have information about n different recipes. You are given a string array recipes and a 2D string array ingredients.

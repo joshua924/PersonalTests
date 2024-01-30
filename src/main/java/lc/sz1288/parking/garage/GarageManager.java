@@ -2,17 +2,13 @@ package lc.sz1288.parking.garage;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lc.sz1288.parking.garage.Car.CarSize;
 import lc.sz1288.parking.garage.Slot.SlotSize;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GarageManager {
     private final Map<CarSize, List<SlotSize>> FEASIBLE_SIZE_MAP = ImmutableMap.of(

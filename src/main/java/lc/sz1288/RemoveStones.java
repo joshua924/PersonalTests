@@ -1,11 +1,6 @@
 package lc.sz1288;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * On a 2D plane, we place n stones at some integer coordinate points. Each coordinate point may have at most one stone.

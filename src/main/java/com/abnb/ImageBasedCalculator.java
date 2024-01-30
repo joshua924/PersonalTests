@@ -1,6 +1,6 @@
 package com.abnb;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,7 +13,7 @@ public class ImageBasedCalculator {
             BufferedImage bufferedImage = ImageIO.read(new File(filePath));
             long width = bufferedImage.getWidth();
             long height = bufferedImage.getHeight();
-            return new Pair<>(width, height);
+            return Pair.of(width, height);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

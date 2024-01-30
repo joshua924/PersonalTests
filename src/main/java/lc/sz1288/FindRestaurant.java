@@ -1,12 +1,6 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class FindRestaurant {
     public String[] findRestaurant(String[] list1, String[] list2) {

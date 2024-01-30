@@ -1,12 +1,6 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance.

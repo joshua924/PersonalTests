@@ -1,10 +1,6 @@
 package lc.sz1288;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Given an array of unique strings words, return all the word squares you can build from words. The same word from words can be used multiple times.

@@ -1,14 +1,9 @@
 package lc.sz1288;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.*;
+
 
 /**
  * You are given an array of variable pairs equations and an array of real numbers values,
@@ -54,7 +49,7 @@ public class EvaluateDivision {
     }
     Queue<Pair<String, Double>> queue = new LinkedList<>();
     Set<String> visited = new HashSet<>();
-    queue.offer(new Pair<>(source, 1.0));
+    queue.offer(Pair.of(source, 1.0));
     while (!queue.isEmpty()) {
       Pair<String, Double> pair = queue.poll();
       String node = pair.getKey();
@@ -68,7 +63,7 @@ public class EvaluateDivision {
           (neighbor, weight) -> {
             double newWeight = val * weight;
             if (!visited.contains(neighbor)) {
-              queue.offer(new Pair<>(neighbor, newWeight));
+              queue.offer(Pair.of(neighbor, newWeight));
             }
           });
     }
